@@ -37,9 +37,9 @@ while IFS= read -r DIR; do
 
 
   # Initiate backup process
-  echo "Start backup of ${DIR_NAME} at $(date +%Y-%m-%d-%H:%I:%S)";
+  echo "Start backup of ${DIR_NAME} at $(date +%Y-%m-%d-%H:%M:%S)";
   borg create --remote-path=/usr/local/bin/borg --verbose --stats -C zstd,20 --exclude=${BACKUP_EXCLUDE[@]} \
-    "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%I_%S)" "$BACKUP_SOURCE" 2>> borg_backup.log  # Log standard error
+    "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%M_%S)" "$BACKUP_SOURCE" 2>> borg_backup.log  # Log standard error
   if [[ $? -eq 0 ]]; then
     echo "Backup of ${DIR_NAME} completed successfully!"
   else
