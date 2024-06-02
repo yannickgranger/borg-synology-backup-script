@@ -1,5 +1,3 @@
-/DATA/AAA_Photo_K
-/DATA/IFX_TRADING
-/DATA/music
-/DATA/photo
-/DATA/Yannick
+/DATA/directory1
+/DATA/directory2
+/DATA/directory3
