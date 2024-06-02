@@ -36,10 +36,11 @@ while IFS= read -r DIR; do
   fi
 
 
+  CURRENT_BACKUP_TIME=$(date +%Y-%m-%d-%H:%M:%S)
   # Initiate backup process
-  echo "Start backup of ${DIR_NAME} at $(date +%Y-%m-%d-%H:%M:%S)";
+  echo "Start backup of ${DIR_NAME} at $CURRENT_BACKUP_TIME";
   borg create --remote-path=/usr/local/bin/borg --verbose --stats -C zstd,20 --exclude=${BACKUP_EXCLUDE[@]} \
-    "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%M_%S)" "$BACKUP_SOURCE" 2>> borg_backup.log  # Log standard error
+    "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$CURRENT_BACKUP_TIME" "$BACKUP_SOURCE" 2>> borg_backup.log  # Log standard error
   if [[ $? -eq 0 ]]; then
     echo "Backup of ${DIR_NAME} completed successfully!"
   else
@@ -49,7 +50,7 @@ while IFS= read -r DIR; do
 
   # Verify the newly created archive (optional)
   echo "Verifying backup of ${DIR_NAME} ... ";
-  borg check --remote-path=/usr/local/bin/borg "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%I_%S)" 2>> borg_backup.log
+  borg check --remote-path=/usr/local/bin/borg "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$CURRENT_BACKUP_TIME" 2>> borg_backup.log
 
   if [[ $? -ne 0 ]]; then
     echo "Borg verification failed!" >> borg_backup.log
