@@ -24,7 +24,7 @@ while IFS= read -r DIR; do
   # Optional: Set Borg encryption password (store securely!)
   # BORG_PASSWORD=""
   # Check if remote repository exists
-  "Running borg info for directory ${DIR}:"
+  echo "Running borg info for directory ${DIR}:";
   borg info --remote-path=/usr/local/bin/borg "$BORG_REPO" 2>> borg_backup.log  # Log standard error to borg_backup.log
 
   # Check exit code of borg info
@@ -37,16 +37,18 @@ while IFS= read -r DIR; do
 
 
   # Initiate backup process
+  echo "Start backup of ${DIR_NAME} at $(date +%Y-%m-%d-%H:%I:%S)";
   borg create --remote-path=/usr/local/bin/borg --verbose --stats -C zstd,20 --exclude=${BACKUP_EXCLUDE[@]} \
     "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%I_%S)" "$BACKUP_SOURCE" 2>> borg_backup.log  # Log standard error
   if [[ $? -eq 0 ]]; then
-    echo "Backup completed successfully!"
+    echo "Backup of ${DIR_NAME} completed successfully!"
   else
-    echo "Backup failed! Check Borg logs for details."
+    echo "Backup of ${DIR_NAME} failed! Check Borg logs for details."
     exit 1
   fi
 
   # Verify the newly created archive (optional)
+  echo "Verifying backup of ${DIR_NAME} ... ";
   borg verify "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%I_%S)" 2>> borg_backup.log
 
   if [[ $? -ne 0 ]]; then
