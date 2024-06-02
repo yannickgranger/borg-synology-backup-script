@@ -1,0 +1,5 @@
+/DATA/AAA_Photo_K
+/DATA/IFX_TRADING
+/DATA/music
+/DATA/photo
+/DATA/Yannick
