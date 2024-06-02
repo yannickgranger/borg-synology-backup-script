@@ -49,7 +49,7 @@ while IFS= read -r DIR; do
 
   # Verify the newly created archive (optional)
   echo "Verifying backup of ${DIR_NAME} ... ";
-  borg check "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%I_%S)" 2>> borg_backup.log
+  borg check --remote-path=/usr/local/bin/borg "$BORG_REPO::{hostname}_backup_${DIR_NAME}_$(date +%Y-%m-%d-%H_%I_%S)" 2>> borg_backup.log
 
   if [[ $? -ne 0 ]]; then
     echo "Borg verification failed!" >> borg_backup.log
